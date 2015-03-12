@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute">
+    <mx:Script>
+          <![CDATA[
+        import mx.controls.Alert;
+        import mx.rpc.events.FaultEvent;
+        import mx.rpc.events.ResultEvent;
+
+        private function onResult(event:ResultEvent):void {
+            Alert.show(event.result.toString());
+        }
+
+        private function onFault(event:FaultEvent):void {
+            Alert.show(event.fault.faultDetail.toString());
+        }
+
+        private function GetHelloWorld():void {
+
+            //this.MyWebService.addEventListener(ResultEvent.RESULT,onResult);
+            //this.MyWebService.addEventListener(FaultEvent.FAULT,onFault);
+            this.MyWebService.HelloWorld.send();
+        }
+        ]]>
+      </mx:Script>
+    <mx:Button name="HW" label="Get HelloWorld" click="GetHelloWorld()"/>
+
+    <mx:WebService id="MyWebService" wsdl="http://192.168.180.81:8099/Service1.asmx?wsdl" useProxy="false"
+                   result="onResult(event)" fault="onFault(event)">
+        <mx:operation name="HelloWorld"/>
+    </mx:WebService>
+</mx:Application>
